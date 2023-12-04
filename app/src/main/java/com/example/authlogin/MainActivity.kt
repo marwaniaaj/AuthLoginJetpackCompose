@@ -10,37 +10,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.authlogin.ui.HomeScreen
+import com.example.authlogin.ui.LoginScreen
 import com.example.authlogin.ui.theme.AuthLoginTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val isLoggedIn = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AuthLoginTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
+                if (isLoggedIn) {
+                    HomeScreen()
+                } else {
+                    LoginScreen()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     AuthLoginTheme {
-        Greeting("Android")
+        HomeScreen()
     }
 }
