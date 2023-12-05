@@ -7,9 +7,9 @@ plugins {
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
 
-    // TODO: Add kapt & dagger hilt plugins
-    // id("kotlin-kapt")
-    // id("com.google.dagger.hilt.android")
+    // Add kapt & dagger hilt plugins
+     id("kotlin-kapt")
+     id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -67,10 +67,10 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     // https://firebase.google.com/docs/android/setup#available-libraries
 
-    // TODO: Add Dagger-Hilt dependencies
-    // implementation("com.google.dagger:hilt-android:2.44.2")
-    // kapt("com.google.dagger:hilt-android-compiler:2.44.2")
-    // implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    // Add Dagger-Hilt dependencies
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    kapt("com.google.dagger:hilt-android-compiler:2.44.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
