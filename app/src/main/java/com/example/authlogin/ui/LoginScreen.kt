@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,11 +24,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.authlogin.AuthViewModel
 import com.example.authlogin.R
+import com.example.authlogin.model.AuthState
+import com.example.authlogin.model.DataProvider
 import com.example.authlogin.ui.theme.AuthLoginTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    authViewModel: AuthViewModel,
+) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary
     ) { paddingValues ->
@@ -75,19 +82,21 @@ fun LoginScreen() {
                 )
             }
 
-            Button(
-                onClick = {
-                    // TODO: Sign in anonymously
-                },
-                modifier = Modifier
-                    .size(width = 200.dp, height = 50.dp)
-                    .padding(horizontal = 16.dp),
-            ) {
-                Text(
-                    text = "Skip",
-                    modifier = Modifier.padding(6.dp),
-                    color = MaterialTheme.colorScheme.tertiary
-                )
+            if (DataProvider.authState == AuthState.SignedOut) {
+                Button(
+                    onClick = {
+                        authViewModel.signInAnonymously()
+                    },
+                    modifier = Modifier
+                        .size(width = 200.dp, height = 50.dp)
+                        .padding(horizontal = 16.dp),
+                ) {
+                    Text(
+                        text = "Skip",
+                        modifier = Modifier.padding(6.dp),
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                }
             }
         }
     }
@@ -97,6 +106,6 @@ fun LoginScreen() {
 @Composable
 fun LoginScreenPreview() {
     AuthLoginTheme {
-        LoginScreen()
+        //LoginScreen()
     }
 }
