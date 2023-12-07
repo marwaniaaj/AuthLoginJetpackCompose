@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.identity.SignInCredential
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
@@ -101,6 +102,16 @@ class AuthRepositoryImpl @Inject constructor(
             Log.i(TAG, "User: ${authResult?.user?.uid}")
             DataProvider.updateAuthState(authResult?.user)
             Response.Success(authResult)
+        }
+        catch (error: FirebaseAuthException) {
+            when (error.errorCode) {
+                Constants.AuthErrors.CREDENTIAL_ALREADY_IN_USE,
+                Constants.AuthErrors.EMAIL_ALREADY_IN_USE -> {
+                    Log.e(TAG, "FirebaseAuthError: authLink(credential:) failed, ${error.message}")
+                    return authSignIn(credential)
+                }
+            }
+            Response.Failure(error)
         }
         catch (error: Exception) {
             Response.Failure(error)
