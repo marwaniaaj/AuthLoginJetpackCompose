@@ -1,5 +1,10 @@
 package com.example.authlogin.ui
 
+import android.app.Activity
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,17 +29,42 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.authlogin.AuthViewModel
 import com.example.authlogin.R
 import com.example.authlogin.model.AuthState
 import com.example.authlogin.model.DataProvider
+import com.example.authlogin.ui.component.AnonymousSignIn
+import com.example.authlogin.ui.component.GoogleSignIn
+import com.example.authlogin.ui.component.OneTapSignIn
 import com.example.authlogin.ui.theme.AuthLoginTheme
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.common.api.ApiException
 
 @Composable
 fun LoginScreen(
     authViewModel: AuthViewModel,
+    loginState: MutableState<Boolean>? = null
 ) {
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            try {
+                val credentials = authViewModel.oneTapClient.getSignInCredentialFromIntent(result.data)
+                authViewModel.signInWithGoogle(credentials)
+            }
+            catch (e: ApiException) {
+                Log.e("LoginScreen:Launcher","Login One-tap $e")
+            }
+        }
+        else if (result.resultCode == Activity.RESULT_CANCELED){
+            Log.e("LoginScreen:Launcher","OneTapClient Canceled")
+        }
+    }
+
+    fun launch(signInResult: BeginSignInResult) {
+        val intent = IntentSenderRequest.Builder(signInResult.pendingIntent.intentSender).build()
+        launcher.launch(intent)
+    }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary
     ) { paddingValues ->
@@ -61,6 +91,7 @@ fun LoginScreen(
             Button(
                 onClick = {
                      // TODO: Sign in with Google
+                    authViewModel.oneTapSignIn()
                 },
                 modifier = Modifier
                     .size(width = 300.dp, height = 50.dp)
@@ -98,6 +129,21 @@ fun LoginScreen(
                     )
                 }
             }
+        }
+    }
+
+    AnonymousSignIn()
+
+    OneTapSignIn (
+        launch = {
+            launch(it)
+        }
+    )
+
+    GoogleSignIn {
+        // Dismiss LoginScreen
+        loginState?.let {
+            it.value = false
         }
     }
 }

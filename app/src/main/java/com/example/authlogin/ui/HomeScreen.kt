@@ -140,7 +140,7 @@ fun HomeScreen(
                 )
             ) {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    LoginScreen(authViewModel)
+                    LoginScreen(authViewModel, openLoginDialog)
                 }
             }
         }

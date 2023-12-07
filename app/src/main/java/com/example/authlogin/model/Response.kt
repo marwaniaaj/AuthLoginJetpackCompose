@@ -1,10 +1,11 @@
 package com.example.authlogin.model
 
+import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.StateFlow
 
-//typealias OneTapSignInResponse = Response<BeginSignInResult>
+typealias OneTapSignInResponse = Response<BeginSignInResult>
 typealias FirebaseSignInResponse = Response<AuthResult>
 typealias SignOutResponse = Response<Boolean>
 typealias AuthStateResponse = StateFlow<FirebaseUser?>

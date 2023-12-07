@@ -68,6 +68,9 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
     implementation("com.google.firebase:firebase-auth")
 
+    // Add the dependency for the Google Play services library
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
     // Add Dagger-Hilt dependencies
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")

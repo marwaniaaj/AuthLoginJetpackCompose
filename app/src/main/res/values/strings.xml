@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AuthLogin</string>
+    <string name="web_client_id">Add_your_web_client_id_here</string>
 </resources>

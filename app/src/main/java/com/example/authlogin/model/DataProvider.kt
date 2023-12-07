@@ -4,12 +4,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.firebase.auth.FirebaseUser
+import com.example.authlogin.model.Response.Success
 
 enum class AuthState {
     Authenticated, SignedIn, SignedOut;
 }
 
 object DataProvider {
+
+    var oneTapSignInResponse by mutableStateOf<OneTapSignInResponse>(Success(null))
+
+    var anonymousSignInResponse by mutableStateOf<FirebaseSignInResponse>(Success(null))
+
+    var googleSignInResponse by mutableStateOf<FirebaseSignInResponse>(Success(null))
+
+    var signOutResponse by mutableStateOf<SignOutResponse>(Success(false))
 
     var user by mutableStateOf<FirebaseUser?>(null)
 
